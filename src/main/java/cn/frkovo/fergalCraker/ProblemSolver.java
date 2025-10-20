@@ -11,9 +11,9 @@ import java.util.List;
 
 import static cn.frkovo.fergalCraker.main.*;
 
-public class Fucker implements Runnable{
+public class ProblemSolver implements Runnable{
     String id;
-    public Fucker(String id){
+    public ProblemSolver(String id){
         this.id = id;
     }
 
@@ -25,15 +25,15 @@ public class Fucker implements Runnable{
                 JSONObject ans = Utils.request(id);
                 if(ans == null){
                     System.out.println("["+id+"] Session ended or invalid ID.");
-                    Booter.map.remove(Integer.parseInt(id));
                     return;
-                }else{
-                    Booter.map.put(Integer.parseInt(id),this);
+                }else if(qNumber == -1){
                     System.out.println("["+id+"] valid. Starting Ans");
                 }
                 if (qNumber == ans.getIntValue("current_index")) {
                     continue;
                 }
+                qNumber = ans.getIntValue("current_index");
+                System.out.println("[" + id + "] New Question Detected: " + qNumber);
                 String imgData = Utils.getImageData("http://10.20.100.26:5550" + ans.getJSONObject("question").getJSONArray("images").getString(0));
                 ChatCompletionContentPart image = ChatCompletionContentPart.ofImageUrl(ChatCompletionContentPartImage.builder()
                         .imageUrl(ChatCompletionContentPartImage.ImageUrl.builder()
@@ -52,7 +52,7 @@ public class Fucker implements Runnable{
                                 The Question Will be given by the Image.
                                 """).build());
                 ChatCompletionCreateParams createParams = ChatCompletionCreateParams.builder()
-                        .model("Qwen/Qwen3-VL-30B-A3B-Instruct")
+                        .model(config.getString("model"))
                         .addUserMessageOfArrayOfContentParts(List.of(sysInputItem, image))
                         .build();
 

@@ -48,7 +48,7 @@ public class Utils {
         JSONObject object = new JSONObject();
         object.put("answer", text);
         object.put("code", id);
-        object.put("name", "Frank");
+        object.put("name", main.config.getString("name"));
         conn.getOutputStream().write(object.toString().getBytes());
         conn.connect();
         System.out.println(conn.getResponseCode());
