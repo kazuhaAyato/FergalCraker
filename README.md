@@ -1,6 +1,6 @@
-# Fergal Craker - Kahoot Automation Tool
+# Fergal Craker - FergalVer. Kahoot Automation Tool
 
-A Java-based automation tool designed to assist with answering educational quiz questions in Kahoot sessions.
+A Java-based automation tool designed to assist with answering educational quiz questions in FergalVer. Kahoot sessions.
 
 ## Overview
 
