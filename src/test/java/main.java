@@ -42,7 +42,7 @@ public class main {
                     .build();
                 StringBuilder builder = new StringBuilder();
                 OpenAIClient client = OpenAIOkHttpClient.builder()
-                    .apiKey("sk-xrqspcsmczyadmfilcihtkaldgrncazbxptdcfmdkpcpjyke")
+                    .apiKey("OH FUCK I FORGET TO REMOVE THIS")
                     .baseUrl("https://api.siliconflow.cn/v1").build();
                 client.chat().completions().create(createParams).choices().stream()
                 .flatMap(choice -> choice.message().content().stream())

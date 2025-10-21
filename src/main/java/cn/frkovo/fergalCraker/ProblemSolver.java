@@ -63,7 +63,7 @@ public class ProblemSolver implements Runnable{
                 String finalAnswer = sb.toString().trim();
                 Utils.response(id, finalAnswer);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw   new RuntimeException(e);
             }
         }
     }
