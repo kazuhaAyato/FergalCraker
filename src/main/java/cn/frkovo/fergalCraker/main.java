@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.HashMap;
+import java.util.Scanner;
 import java.util.logging.Logger;
 
 public class main {
@@ -41,6 +42,13 @@ public class main {
         client = OpenAIOkHttpClient.builder()
         .apiKey(config.getString("api_key"))
         .baseUrl(config.getString("base_url")).build();
+        if(args.length > 0){
+            new ProblemSolver(args[0]).run();
+        }else{
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Please Input The Room Code:");
+            new ProblemSolver(sc.nextLine()).run();
+        }
         while(true){
             for(int i = 1000;i<=9999;i++){
                 new ProblemSolver(String.valueOf(i)).run();
