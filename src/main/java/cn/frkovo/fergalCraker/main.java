@@ -49,6 +49,7 @@ public class main {
             System.out.println("Please Input The Room Code:");
             new ProblemSolver(sc.nextLine()).run();
         }
+        System.out.println("Start Recursion..");
         while(true){
             for(int i = 1000;i<=9999;i++){
                 new ProblemSolver(String.valueOf(i)).run();
