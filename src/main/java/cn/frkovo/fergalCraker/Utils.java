@@ -51,7 +51,7 @@ public class Utils {
         object.put("name", main.config.getString("name"));
         conn.getOutputStream().write(object.toString().getBytes());
         conn.connect();
-        System.out.println(conn.getResponseCode());
+        System.out.println(conn.getResponseCode() + " - " + object);
 
     }
 }

@@ -7,6 +7,7 @@ import com.openai.models.chat.completions.ChatCompletionContentPartText;
 import com.openai.models.chat.completions.ChatCompletionCreateParams;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static cn.frkovo.fergalCraker.main.*;
@@ -34,26 +35,38 @@ public class ProblemSolver implements Runnable{
                 }
                 qNumber = ans.getIntValue("current_index");
                 System.out.println("[" + id + "] New Question Detected: " + qNumber);
-                String imgData = Utils.getImageData("http://10.20.100.26:5550" + ans.getJSONObject("question").getJSONArray("images").getString(0));
-                ChatCompletionContentPart image = ChatCompletionContentPart.ofImageUrl(ChatCompletionContentPartImage.builder()
+                List<ChatCompletionContentPart> arr = new ArrayList<>();
+                ans.getJSONObject("question").getJSONArray("images").toList(String.class).forEach(i ->{
+                    String imgData;
+                    try {
+                        imgData = Utils.getImageData("http://10.20.100.26:5550" + i);
+                    } catch (IOException e) {
+                        return;
+                    }
+                    ChatCompletionContentPart image = ChatCompletionContentPart.ofImageUrl(ChatCompletionContentPartImage.builder()
                         .imageUrl(ChatCompletionContentPartImage.ImageUrl.builder()
                                 .url(imgData)
                                 .build())
                         .build());
+                    arr.add(image);
+                });
+
                 ChatCompletionContentPart sysInputItem = ChatCompletionContentPart.ofText(
                         ChatCompletionContentPartText.builder().text("""
                                 You Are A CAIE 9618 COMPUTER SCIENCE teacher.
                                 Your Student is asking you problems,and
                                 your job is to solve them one by one, exactly in english, using fluent languages IN ENGLISH ONLY.
-                                You Could Use Emojis, and Make The Answer More Interesting.
-                                You are also allowed to use memes and jokes to make the learning experience more enjoyable.
+      
+                                PLEASE DO NOT USE, WORDS LIKE SURE，Let's TO START THE ANSWER.
+                                ANSWER THE QUESTION DIRECTLY.
                                 And it's better to make the whole class laugh.
                                 You Must Answer The Question ONLY, DO NOT ADD ANYTHING EXTRA.
                                 The Question Will be given by the Image.
                                 """).build());
+                arr.add(sysInputItem);
                 ChatCompletionCreateParams createParams = ChatCompletionCreateParams.builder()
                         .model(config.getString("model"))
-                        .addUserMessageOfArrayOfContentParts(List.of(sysInputItem, image))
+                        .addUserMessageOfArrayOfContentParts(arr)
                         .build();
 
                 StringBuilder sb = new StringBuilder();
